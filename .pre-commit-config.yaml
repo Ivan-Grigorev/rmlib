@@ -12,8 +12,8 @@ repos:
     hooks:
     -   id: pylint
         args: [
-                --max-line-length=100,
-                --disable=C0103,C0111,R0901,R0902,R0903,R0904,R0911,R0912,R0913,R0914
+                "--max-line-length=100",
+                "--disable=C0103,C0111,R0901,R0902,R0903,R0904,R0911,R0912,R0913,R0914"
         ]
 
 -   repo: https://github.com/PyCQA/flake8
@@ -21,7 +21,7 @@ repos:
     hooks:
     -   id: flake8
         args: [
-                --max-line-length=100
+                "--max-line-length=100"
         ]
 
 -   repo: https://github.com/psf/black

@@ -1,6 +1,6 @@
-"""Module tests sample_foo function from example.py"""
+"""Module tests sample_foo function from rmlib.py"""
 
-from example_dir.example import sample_foo
+from my_rmlib.rmlib import sample_foo
 
 
 def test_sample_foo():

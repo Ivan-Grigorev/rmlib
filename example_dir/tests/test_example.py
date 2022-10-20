@@ -1,6 +1,6 @@
 """Module tests sample_foo function from example.py"""
 
-from example import sample_foo
+from example_dir.example import sample_foo
 
 
 def test_sample_foo():

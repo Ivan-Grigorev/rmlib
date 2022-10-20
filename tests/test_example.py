@@ -1,6 +1,5 @@
 """Module tests sample_foo function from example.py"""
 
-
 from example import sample_foo
 
 

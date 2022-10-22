@@ -1,12 +1,6 @@
-"""Module mave, remove directories and files"""
+"""Module move, remove directories and files"""
 
 import os
-
-
-def sample_foo():
-    """Function return useful dict"""
-    useful_dict = {"key_1": 1}
-    return useful_dict
 
 
 def mv(src, dst):

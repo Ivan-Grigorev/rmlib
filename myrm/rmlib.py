@@ -1,6 +1,14 @@
 """Module move, remove directories and files"""
 
+import logging
 import os
+
+logging.basicConfig(
+    filename="/Users/ivangrigorev/documents/rmlib/rmlib.log",
+    format="%(asctime)s - %(levelname)s :: %(name)s :: %(message)s",
+    datefmt="%Y-%m-%d--%H-%M-%S",
+)
+logger = logging.getLogger()
 
 
 def mv(src, dst):
@@ -14,7 +22,7 @@ def mv(src, dst):
             os.replace(src, dst)
             print("File successfully moved.")
     except OSError as error:
-        print(error)
+        logger.error(error)
 
 
 def mvdir(src, dst):
@@ -28,7 +36,7 @@ def mvdir(src, dst):
         os.rmdir(src)
         print("Directory successfully moved!")
     except OSError as error:
-        print(error)
+        logger.error(error)
 
 
 def rm(path):
@@ -37,7 +45,7 @@ def rm(path):
         os.remove(path)
         print(f"{path} removed successfully.")
     except OSError as error:
-        print(error)
+        logger.error(error)
 
 
 def rmdir(path):
@@ -51,7 +59,7 @@ def rmdir(path):
             os.rmdir(path)
         print(f"{path} successfully removed.")
     except OSError as error:
-        print(error)
+        logger.error(error)
 
 
 def mkdir(path):
@@ -60,4 +68,4 @@ def mkdir(path):
         os.mkdir(path)
         print(f"{path} successfully created.")
     except OSError as error:
-        print(error)
+        logger.error(error)

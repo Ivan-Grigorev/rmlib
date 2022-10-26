@@ -43,7 +43,12 @@ def rm(path):
 def rmdir(path):
     """Function remove directories"""
     try:
-        os.rmdir(path)
+        if os.listdir(path):
+            for f in os.listdir(path):
+                os.remove(path + f)
+            os.rmdir(path)
+        else:
+            os.rmdir(path)
         print(f"{path} successfully removed.")
     except OSError as error:
         print(error)

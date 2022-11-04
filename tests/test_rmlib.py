@@ -19,7 +19,6 @@ def test_mvdir(my_example):
     src_files = len(os.listdir(my_example[0]))
     src_folder = os.path.basename(os.path.dirname(my_example[0]))
     mvdir(my_example[0], my_example[1])
-    print(os.path.exists(my_example[0]))
     assert os.path.exists(my_example[0]) == False
     assert os.path.exists(my_example[1]) == True
     assert src_files == len(os.listdir(os.path.join(my_example[1], src_folder)))

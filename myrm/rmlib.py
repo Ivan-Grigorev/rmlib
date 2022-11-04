@@ -2,50 +2,52 @@
 
 import errno
 import logging
-import logging.config
 import os
 import sys
 
-# logging.basicConfig(
-#     format="%(asctime)s - %(levelname)s :: %(name)s :: %(message)s",
-#     datefmt="%Y-%m-%d--%H-%M-%S",
-# )
-# logging.config.dictConfig({
-#
-# })
-logger = logging.getLogger("rmlib")
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def mv(src, dst):
     """Function move files"""
     try:
         os.rename(src, dst)
-    except OSError:  # as err:
-        logger.error("Message from mv")
-        # sys.exit()
+        logger.info("File by path %s was successfully moved.", src)
+    except OSError as err:
+        if err.errno == errno.EEXIST:
+            logger.error("By this path file already exists.")
+        else:
+            sys.exit(err.strerror)
 
 
 def mvdir(src, dst):
-    """Function move folders"""
-    try:  # try only ...
-        move_to = os.path.join(dst, os.path.basename(os.path.dirname(src)))
+    """Function move directories"""
+    move_to = os.path.join(dst, os.path.basename(src))
+    try:
         mkdir(move_to)
-        all_files = os.listdir(src)  # if folders inside
+        all_files = os.listdir(src)
         for file in all_files:
-            os.rename(os.path.join(src, file), os.path.join(move_to, file))
+            mv(os.path.join(src, file), os.path.join(move_to, file))
         rmdir(src)
-    except OSError:  # as err:
-        logger.error("Message from mvdir")
-        # sys.exit()
+        logger.info("Directory by path %s was successfully moved.", src)
+    except OSError as err:
+        if err.errno == errno.ENOENT:
+            logger.error("No such file or directory.")
+        else:
+            sys.exit(err.strerror)
 
 
 def rm(path):
     """Function remove files"""
     try:
         os.remove(path)
-    except OSError:  # as err:
-        logger.info("Message from rm")
-        # sys.exit()
+        logger.info("File by path %s was successfully moved.", path)
+    except OSError as err:
+        if err.errno == errno.ENOENT:
+            logger.error("No such file or directory.")
+        else:
+            sys.exit(err.strerror)
 
 
 def rmdir(path):
@@ -53,31 +55,28 @@ def rmdir(path):
     try:
         if os.path.islink(path):
             os.unlink(path)
-        elif os.listdir(path):
-            for file in os.listdir(path):
-                os.remove(os.path.join(path, file))
-            os.removedirs(path)
+        if os.listdir(path):
+            for root, dirs, files in os.walk(path, topdown=False):
+                for name in files:
+                    rm(os.path.join(root, name))
+                os.removedirs(root)
+            logger.info("Directory by path %s was successfully removed.", path)
         else:
             os.removedirs(path)
-    except OSError:  # as err:
-        logger.error("Message from rmdir")
-        # sys.exit()
+    except OSError as err:
+        if err.errno == errno.ENOENT:
+            logger.error("No such file or directory.")
+        else:
+            sys.exit(err.strerror)
 
 
 def mkdir(path):
     """Function create directories"""
     try:
         os.makedirs(path)
+        logger.info("Directory by path %s was successfully created.", path)
     except OSError as err:
         if err.errno == errno.EEXIST:
             logger.error("By this path directory already exists.")
         else:
-            sys.exit(err.errno)
-
-
-def main():
-    pass
-
-
-# if __name__ == '__main__':
-#     main()
+            sys.exit(err.strerror)
